@@ -41,17 +41,17 @@ def train_net(n_epochs,load_model_dir, batch_size=128, lr=0.0001, save_model_dir
     if os.path.exists(load_model_dir):
         print("loading previous weights...")
         net.load_state_dict(torch.load(load_model_dir))
-        epoch_i = int(re.findall("\d+", load_model_dir)[-1])
+        epoch_p = int(re.findall("\d+", load_model_dir)[-1])
     else:
         print("training from 0...")
-        epoch_i = 0
+        epoch_p = 0
 
     # setting optimizer , criterion
     optimizer = optim.Adam(net.parameters(), lr=lr)
     criterion = nn.MSELoss()
 
-
-    for epoch in range(n_epochs):  # loop over the dataset multiple times
+    epoch_i =0
+    for epoch in range(epoch_p, n_epochs):  # loop over the dataset multiple times
         epoch_i += 1
         running_loss = 0.0
         # 每100个epoch保存一次模型
