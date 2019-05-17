@@ -10,6 +10,7 @@ from torchvision import transforms, utils
 from data_load import Rescale, RandomCrop, Normalize, ToTensor
 from data_load import FacialKeypointsDataset
 import torch.optim as optim
+import os
 
 
 
@@ -17,7 +18,7 @@ import torch.optim as optim
 
 
 
-def train_net(n_epochs, batch_size=128, lr=0.0001, model_dir="saved_models/"):
+def train_net(n_epochs, batch_size=128, lr=0.0001, save_model_dir="saved_models/", load_model_dir="saved_models/keypoints_model_1.pt"):
     #  prepare data
     data_transform = transforms.Compose([Rescale(250),
                                          RandomCrop(224),
@@ -38,6 +39,15 @@ def train_net(n_epochs, batch_size=128, lr=0.0001, model_dir="saved_models/"):
     net = Net()
     net.train()
     net.cuda()
+
+    # loading previous weights
+    if os.path.exists(load_model_dir):
+        print("loading previous weights...")
+        net.load_state_dict(torch.load(load_model_dir))
+    else:
+        print("training from 0...")
+
+    # setting optimizer , criterion
     optimizer = optim.Adam(net.parameters(), lr=lr)
     criterion = nn.MSELoss()
 
@@ -49,7 +59,7 @@ def train_net(n_epochs, batch_size=128, lr=0.0001, model_dir="saved_models/"):
         # 每100个epoch保存一次模型
         if epoch_i % 100 == 0:
             # after training, save your model parameters in the dir 'saved_models'
-            torch.save(net.state_dict(), model_dir + 'keypoints_model_{}.pt'.format(epoch_i))
+            torch.save(net.state_dict(), save_model_dir + 'keypoints_model_{}.pt'.format(epoch_i))
 
         # train on batches of data, assumes you already have train_loader
         for batch_i, data in enumerate(train_loader):
