@@ -19,7 +19,7 @@ data_transform = transforms.Compose([Rescale(250),
                                      ToTensor()])
 
 
-def train_net(n_epochs,load_model_dir, batch_size=128, lr=0.0001, save_model_dir="saved_models/"):
+def train_net(n_epochs,load_model_dir, batch_size=64, lr=0.0001, save_model_dir="saved_models/"):
     #  prepare data
     transformed_dataset = FacialKeypointsDataset(csv_file='data/training_frames_keypoints.csv',
                                                  root_dir='data/training/',
@@ -169,7 +169,7 @@ if __name__ == '__main__':
 
     # Train = 1为训练, =0 为测试
     Train = 1
-    load_model_dir = "saved_models/keypoints_model_200.pt"
+    load_model_dir = "saved_models/keypoints_model_100.pt"
     n_epochs = 10000
 
     if Train:
