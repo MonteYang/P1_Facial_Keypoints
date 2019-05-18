@@ -55,9 +55,9 @@ def train_net(n_epochs,load_model_dir, batch_size=128, lr=0.0001, save_model_dir
         epoch_i += 1
         running_loss = 0.0
         # 每100个epoch保存一次模型
-        if epoch_i % 100 == 0:
+        if epoch_i % 50 == 0:
             # after training, save your model parameters in the dir 'saved_models'
-            torch.save(net.state_dict(), save_model_dir + 'keypoints_model_{}.pt'.format(epoch_i))
+            torch.save(net.state_dict(), save_model_dir + 'keypoints_model_{}.pt'.format(epoch_p))
 
         # train on batches of data, assumes you already have train_loader
         for batch_i, data in enumerate(train_loader):
